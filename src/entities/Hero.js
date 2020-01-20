@@ -130,6 +130,13 @@ class Hero extends Phaser.GameObjects.Sprite {
         break;
       }
     }
+
+    for (const t of this.animState.transitions()) {
+      if (t in this.animPredicates && this.animPredicates[t]()) {
+        this.animState[t]();
+        break;
+      }
+    }
   }
 
 }
