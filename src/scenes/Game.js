@@ -16,7 +16,16 @@ class Game extends Phaser.Scene {
   }
 
   create(data) {
-    this.add.sprite(400, 300, 'hero-run-sheet', 5);
+
+    this.anims.create({
+      key: 'hero-running',
+      frames: this.anims.generateFrameNumbers('hero-run-sheet'),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.player = this.add.sprite(400, 300, 'hero-run-sheet');
+    this.player.anims.play('hero-running');
   }
 
   update(time, delta) {}
