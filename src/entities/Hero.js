@@ -12,6 +12,7 @@ class Hero extends Phaser.GameObjects.Sprite {
 
     this.anims.play('hero-running');
 
+    this.setOrigin(0.5, 1);
     this.body.setCollideWorldBounds(true);
     this.body.setSize(12, 40);
     this.body.setOffset(12, 23);
