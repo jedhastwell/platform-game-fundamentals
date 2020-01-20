@@ -43,6 +43,27 @@ class Hero extends Phaser.GameObjects.Sprite {
         },
       },
     });
+
+    this.animPredicates = {
+      idle: () => {
+        return this.body.onFloor() && this.body.velocity.x === 0;
+      },
+      run: () => {
+        return this.body.onFloor() && Math.sign(this.body.velocity.x) === (this.flipX ? -1 : 1);
+      },
+      pivot: () => {
+        return this.body.onFloor() && Math.sign(this.body.velocity.x) === (this.flipX ? 1 : -1);
+      },
+      jump: () => {
+        return this.body.velocity.y < 0;
+      },
+      flip: () => {
+        return this.body.velocity.y < 0 && this.moveState.is('flipping');
+      },
+      fall: () => {
+        return this.body.velocity.y > 0;
+      },
+    };
   }
 
   setupMovement() {
