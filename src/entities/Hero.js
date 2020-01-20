@@ -41,6 +41,13 @@ class Hero extends Phaser.GameObjects.Sprite {
         }
       },
     });
+
+    this.movePredicates = {
+      jump: () => {},
+      flip: () => {},
+      fall: () => {},
+      touchdown: () => {},
+    };
   }
 
   preUpdate(time, delta) {
@@ -82,6 +89,13 @@ class Hero extends Phaser.GameObjects.Sprite {
 
     if (!this.keys.up.isDown && this.body.velocity.y < -150 && this.isJumping) {
       this.body.setVelocityY(-150);
+    }
+
+    for (const t of this.moveState.transitions()) {
+      if (t in this.movePredicates && this.movePredicates[t]()) {
+        this.moveState[t]();
+        break;
+      }
     }
   }
 
