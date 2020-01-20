@@ -106,13 +106,14 @@ class Game extends Phaser.Scene {
     this.addHero();
 
     this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-    this.cameras.main.startFollow(this.hero);
 
   }
 
   addHero() {
     this.hero = new Hero(this, this.spawnPos.x, this.spawnPos.y);
 
+    this.cameras.main.startFollow(this.hero);
+    
     this.children.moveTo(this.hero, this.children.getIndex(this.map.getLayer('Foreground').tilemapLayer));
 
     const groundCollider = this.physics.add.collider(this.hero, this.map.getLayer('Ground').tilemapLayer);
@@ -165,7 +166,14 @@ class Game extends Phaser.Scene {
 
   }
 
-  update(time, delta) {}
+  update(time, delta) {
+    const cameraBottom = this.cameras.main.getWorldPoint(0, this.cameras.main.height).y;
+
+    if (this.hero.isDead() && this.hero.getBounds().top > cameraBottom + 100) {
+      this.hero.destroy();
+      this.addHero()
+    }
+  }
 }
 
 export default Game;
