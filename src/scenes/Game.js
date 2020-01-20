@@ -1,3 +1,4 @@
+/// <reference path="../../typings/phaser.d.ts" />
 import Phaser from 'phaser';
 
 class Game extends Phaser.Scene {
