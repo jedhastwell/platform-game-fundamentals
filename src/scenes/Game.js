@@ -120,9 +120,14 @@ class Game extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
     this.physics.world.setBoundsCollision(true, true, false, true);
 
+    this.spikeGroup = this.physics.add.group({ immovable: true, allowGravity: false });
+
     this.map.getObjectLayer('Objects').objects.forEach(object => {
       if (object.name === 'Start') {
         this.spawnPos = { x: object.x, y: object.y };
+      }
+      if (object.gid === 7) {
+        this.spikeGroup.create(object.x, object.y, 'world-1-sheet');
       }
     });
 
