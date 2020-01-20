@@ -21,7 +21,28 @@ class Hero extends Phaser.GameObjects.Sprite {
     this.keys = scene.cursorKeys;
     this.input = {};
 
+    this.setupAnimations();
     this.setupMovement();
+  }
+
+  setupAnimations() {
+    this.animState = new StateMachine({
+      init: 'idle',
+      transitions: [
+        { name: 'idle', from: ['falling', 'running', 'pivoting'], to: 'idle' },
+        { name: 'run', from: ['falling', 'idle', 'pivoting'], to: 'running' },
+        { name: 'pivot', from: ['falling', 'running'], to: 'pivoting' },
+        { name: 'jump', from: ['idle', 'running', 'pivoting'], to: 'jumping' },
+        { name: 'flip', from: ['jumping', 'falling'], to: 'flipping' },
+        { name: 'fall', from: '*', to: 'falling' },
+      ],
+      methods: {
+        onEnterState: (lifecycle) => {
+          this.anims.play('hero-' + lifecycle.to);
+          console.log(lifecycle);
+        },
+      },
+    });
   }
 
   setupMovement() {
@@ -34,9 +55,6 @@ class Hero extends Phaser.GameObjects.Sprite {
         { name: 'touchdown', from: ['jumping', 'flipping', 'falling'], to: 'standing'},
       ],
       methods: {
-        onEnterState: (lifecycle) => {
-          console.log(lifecycle);
-        },
         onJump: () => {
           this.body.setVelocityY(-400);
         },
