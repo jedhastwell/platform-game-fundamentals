@@ -16,6 +16,8 @@ class Game extends Phaser.Scene {
 
   create(data) {
 
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    
     this.anims.create({
       key: 'hero-running',
       frames: this.anims.generateFrameNumbers('hero-run-sheet'),
